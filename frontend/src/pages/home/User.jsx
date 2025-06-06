@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../../store/slices/user/userSlice";
+import "./UserSidebar.css";
 
 const User = ({ user, setIsOpen }) => {
   const { selectedUser } = useSelector((state) => state.userReducer);
@@ -20,7 +21,7 @@ const User = ({ user, setIsOpen }) => {
         handleUserSelect();
         toggleUsersSidebar();
       }}
-      className={`list-row hover:bg-gray-700 cursor-pointer ms-3 mb-1 ${
+      className={`list-row hover:bg-gray-700 cursor-pointer ms-3 mb-1 user ${
         user._id === selectedUser?._id ? "bg-gray-700" : ""
       }`}
     >

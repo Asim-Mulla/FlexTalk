@@ -166,7 +166,7 @@ const ChatsContainer = ({ setIsOpen }) => {
         </div>
       ) : (
         <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-          <h2 className="text-2xl font-bold">Welcome to ChatterBox</h2>
+          <h2 className="text-2xl font-bold">Welcome to FlexTalk</h2>
           <p className="text-sm font-semibold">
             Please select a user to start chatting
           </p>

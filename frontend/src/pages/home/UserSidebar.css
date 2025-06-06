@@ -10,6 +10,10 @@
   .usersSidebar.open {
     transform: translateX(0rem) !important;
   }
+
+  .user {
+    margin-right: 0.8rem;
+  }
 }
 
 @media (min-width: 640px) {

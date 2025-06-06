@@ -33,7 +33,7 @@ const UserSidebar = ({ isOpen, setIsOpen }) => {
         } bg-base-100 sm:min-w-[20rem] min-w-[15rem] w-full h-screen flex flex-col `}
       >
         <div className="flex justify-between items-center p-3">
-          <h1 className="text-2xl font-bold text-[#5f5dfe]">ChatterBox</h1>
+          <h1 className="text-2xl font-bold text-[#5f5dfe]">FlexTalk</h1>
           <button
             className="toggleSidebarButton text-2xl"
             onClick={toggleUsersSidebar}
