@@ -1,0 +1,19 @@
+@media (max-width: 639px) {
+  .usersSidebar {
+    border-right: 1px solid rgb(55, 65, 81);
+    position: absolute;
+    transform: translateX(-20rem);
+    transition: all 0.5s ease 0s;
+    z-index: 9;
+  }
+
+  .usersSidebar.open {
+    transform: translateX(0rem) !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .toggleSidebarButton {
+    display: none;
+  }
+}
