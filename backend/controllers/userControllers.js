@@ -40,6 +40,35 @@ const register = asyncHandler(async (req, res, next) => {
 
   const cookieExpiryMs = process.env.COOKIE_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
 
+  // Notifying on telegram
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  const sendTelegramNotification = async () => {
+    const message = `! New user signed up !
+    User name :- ${newUser.name},
+    User username :- ${newUser.username},
+    `;
+
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(
+      message
+    )}`;
+
+    try {
+      const response = await fetch(url);
+      const result = await response.json();
+      if (result.ok) {
+        // console.log("Notification sent successfully!");
+      } else {
+        console.error("Failed to send notification:", result);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  sendTelegramNotification();
+
   res
     .status(200)
     .cookie("token", token, {
