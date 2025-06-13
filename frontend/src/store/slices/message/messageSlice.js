@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getMessagesThunk, sendMessageThunk } from "./messageThunk";
+import { useSelector } from "react-redux";
 
 export const messageSlice = createSlice({
   name: "message",

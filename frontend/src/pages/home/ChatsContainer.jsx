@@ -8,9 +8,12 @@ import {
 } from "../../store/slices/message/messageThunk";
 import "./UserSidebar.css";
 import { IoMenu } from "react-icons/io5";
+import { addToContactedUser } from "../../store/slices/user/userSlice";
 
 const ChatsContainer = ({ setIsOpen }) => {
-  const { selectedUser } = useSelector((state) => state.userReducer);
+  const { selectedUser, contactedUsers } = useSelector(
+    (state) => state.userReducer
+  );
   const { messages } = useSelector((state) => state.messageReducer);
   const { socket, onlineUsers } = useSelector((state) => state.socketReducer);
 
@@ -51,6 +54,14 @@ const ChatsContainer = ({ setIsOpen }) => {
 
     if (res.payload.success) {
       setMessage("");
+
+      const userAlreadyInContact = contactedUsers.find((user) => {
+        user._id === selectedUser._id;
+      });
+
+      if (!userAlreadyInContact) {
+        dispatch(addToContactedUser(selectedUser));
+      }
     }
   };
 
@@ -168,10 +179,14 @@ const ChatsContainer = ({ setIsOpen }) => {
         <div className="w-full h-full flex flex-col justify-center items-center gap-2">
           <h2 className="text-2xl font-bold">Welcome to FlexTalk</h2>
           <p className="text-sm font-semibold">
-            Please select a user to start chatting
+            {!contactedUsers?.length ? (
+              <span>Please search and select a user to start chatting</span>
+            ) : (
+              <span>Please select a user to start chatting</span>
+            )}
           </p>
           <button
-            className="toggleSidebarButton btn btn-primary btn-sm"
+            className="selectUserBtn btn btn-primary btn-sm"
             onClick={toggleUsersSidebar}
           >
             Select User

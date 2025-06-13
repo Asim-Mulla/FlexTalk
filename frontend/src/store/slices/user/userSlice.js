@@ -14,6 +14,7 @@ export const userSlice = createSlice({
     isAuthenticated: false,
     userProfile: null,
     otherUsers: null,
+    contactedUsers: null,
     selectedUser: null,
     screenLoading: true,
     buttonLoading: false,
@@ -21,6 +22,10 @@ export const userSlice = createSlice({
   reducers: {
     setSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
+    },
+
+    addToContactedUser: (state, action) => {
+      state.contactedUsers.push(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +69,7 @@ export const userSlice = createSlice({
       state.userProfile = null;
       state.isAuthenticated = false;
       state.otherUsers = null;
+      state.contactedUsers = null;
       state.selectedUser = null;
       state.buttonLoading = false;
       if (action.payload.success) {
@@ -93,7 +99,8 @@ export const userSlice = createSlice({
     });
     builder.addCase(getOtherUsersThunk.fulfilled, (state, action) => {
       state.screenLoading = false;
-      state.otherUsers = action?.payload?.responseData;
+      state.otherUsers = action?.payload?.responseData?.users;
+      state.contactedUsers = action?.payload?.responseData?.contactedUsers;
     });
     builder.addCase(getOtherUsersThunk.rejected, (state, action) => {
       state.screenLoading = false;
@@ -101,6 +108,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setSelectedUser } = userSlice.actions;
+export const { setSelectedUser, addToContactedUser } = userSlice.actions;
 
 export default userSlice.reducer;

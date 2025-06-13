@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { errorHandler } from "../utils/errorHandler.js";
+import Conversation from "../models/conversationModel.js";
 
 const register = asyncHandler(async (req, res, next) => {
   const { name, username, password, gender } = req.body;
@@ -138,9 +139,33 @@ const logout = asyncHandler(async (req, res, next) => {
 });
 
 const getOtherUsers = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+
+  if (!userId) {
+    return next(new errorHandler("Something went wrong", 400));
+  }
+
   const users = await User.find({ _id: { $ne: req.user.id } });
 
-  res.status(200).json({ success: true, responseData: users });
+  const contactedUserIds = [];
+
+  const conversations = await Conversation.find({
+    participants: userId,
+  });
+
+  conversations.forEach((conversation) => {
+    conversation.participants.forEach((participantId) => {
+      if (participantId.toString() !== userId) {
+        contactedUserIds.push(participantId);
+      }
+    });
+  });
+
+  const contactedUsers = await User.find({ _id: { $in: contactedUserIds } });
+
+  res
+    .status(200)
+    .json({ success: true, responseData: { users, contactedUsers } });
 });
 
 export { register, login, getProfile, logout, getOtherUsers };

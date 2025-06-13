@@ -8,7 +8,9 @@ import User from "./User";
 import "./UserSidebar.css";
 
 const UserSidebar = ({ isOpen, setIsOpen }) => {
-  const { userProfile, otherUsers } = useSelector((state) => state.userReducer);
+  const { userProfile, otherUsers, contactedUsers } = useSelector(
+    (state) => state.userReducer
+  );
   const [searchUser, setSearchUser] = useState();
 
   const dispatch = useDispatch();
@@ -47,23 +49,40 @@ const UserSidebar = ({ isOpen, setIsOpen }) => {
             <input
               type="search"
               required
-              placeholder="Search"
+              placeholder="Search user"
               onChange={(e) => setSearchUser(e.target.value)}
             />
           </label>
         </div>
         <div className="h-full overflow-y-scroll mt-3">
+          {!searchUser && !contactedUsers?.length ? (
+            <span className="ms-3 font-semibold opacity-60">
+              Suggested for you
+            </span>
+          ) : null}
           <ul className="list bg-base-100 rounded-box shadow-md">
-            {otherUsers
-              ?.filter(
-                (user) =>
-                  !searchUser ||
-                  user.name.toLowerCase().includes(searchUser.toLowerCase()) ||
-                  user.username.includes(searchUser)
-              )
-              .map((user) => (
-                <User user={user} key={user._id} setIsOpen={setIsOpen} />
-              ))}
+            {!searchUser && !contactedUsers?.length
+              ? otherUsers
+                  ?.slice(0, 3)
+                  .map((user) => (
+                    <User user={user} key={user._id} setIsOpen={setIsOpen} />
+                  ))
+              : !searchUser
+              ? contactedUsers?.map((user) => (
+                  <User user={user} key={user._id} setIsOpen={setIsOpen} />
+                ))
+              : otherUsers
+                  ?.filter(
+                    (user) =>
+                      !searchUser ||
+                      user.name
+                        .toLowerCase()
+                        .includes(searchUser.toLowerCase()) ||
+                      user.username.includes(searchUser)
+                  )
+                  .map((user) => (
+                    <User user={user} key={user._id} setIsOpen={setIsOpen} />
+                  ))}
           </ul>
         </div>
         <div className="h-[3rem] m-3">
