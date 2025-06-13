@@ -56,9 +56,9 @@ const UserSidebar = ({ isOpen, setIsOpen }) => {
         </div>
         <div className="h-full overflow-y-scroll mt-3">
           {!searchUser && !contactedUsers?.length ? (
-            <span className="ms-3 font-semibold opacity-60">
+            <p className="ms-3 mb-2 font-semibold opacity-60">
               Suggested for you
-            </span>
+            </p>
           ) : null}
           <ul className="list bg-base-100 rounded-box shadow-md">
             {!searchUser && !contactedUsers?.length
